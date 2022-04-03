@@ -112,9 +112,33 @@ type PaginatorInfo {
   total: Int!
 }
 
-"""Get logged in user"""
+"""
+Indicates what fields are available at the top level of a query operation.
+"""
 type Query {
+  """Find a single user by an identifying attribute."""
+  user(
+    """Search by primary key."""
+    id: ID
+
+    """Search by email address."""
+    email: String
+  ): User
+
+  """Get current user"""
   me: User
+
+  """List multiple users."""
+  users(
+    """Filters by name. Accepts SQL LIKE wildcards `%` and `_`."""
+    name: String
+
+    """Limits number of fetched items."""
+    first: Int! = 10
+
+    """The offset from which items are returned."""
+    page: Int
+  ): UserPaginator
 }
 
 """Information about pagination using a simple paginator."""
@@ -180,4 +204,13 @@ type User {
 
   """When the account was last updated."""
   updated_at: DateTime!
+}
+
+"""A paginated list of User items."""
+type UserPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of User items."""
+  data: [User!]!
 }
