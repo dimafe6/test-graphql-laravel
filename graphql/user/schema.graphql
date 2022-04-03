@@ -32,19 +32,19 @@ type User {
 
 input RegisterUserInput {
     "User name"
-    name: String! @rules(apply: ["min:3"])
+    name: String! @rules(apply: ["required", "min:3"])
 
     "User email"
-    email: String! @rules(apply: ["email", "unique:users,email"])
+    email: String! @rules(apply: ["required", "email", "unique:users,email"])
 
     "User password"
-    password: String!
+    password: String! @rules(apply: ["required", "min:6"])
 }
 
 input LoginInput {
     "User email"
-    email: String!
+    email: String! @rules(apply: ["required", "email", "exists:users,email"])
 
     "User password"
-    password: String!
+    password: String! @rules(apply: ["required", "min:6"])
 }

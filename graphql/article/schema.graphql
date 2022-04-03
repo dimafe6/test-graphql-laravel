@@ -24,11 +24,11 @@ type Article {
 
 input ArticleInput {
     "Article title"
-    title: String! @rules(apply: ["min:5", "max:255"])
+    title: String! @rules(apply: ["string", "required", "min:5", "max:255"])
 
     "Article content"
-    content: String! @rules(apply: ["min:5", "max:5000"])
+    content: String! @rules(apply: ["string", "required", "min:5", "max:5000"])
 
     "Article image file"
-    image: Upload!  @rules(apply: ["image", "max:1004"])
+    image: Upload  @rules(apply: ["image", "max:1004"])
 }

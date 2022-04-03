@@ -30,7 +30,7 @@ input ArticleInput {
   content: String!
 
   """Article image file"""
-  image: Upload!
+  image: Upload
 }
 
 """A paginated list of Article items."""
