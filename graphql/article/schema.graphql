@@ -29,6 +29,6 @@ input ArticleInput {
     "Article content"
     content: String! @rules(apply: ["min:5", "max:5000"])
 
-    "Article image"
+    "Article image file"
     image: Upload!  @rules(apply: ["image", "max:1004"])
 }
