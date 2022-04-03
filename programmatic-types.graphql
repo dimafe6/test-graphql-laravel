@@ -24,13 +24,13 @@ values. Int can represent values between -(2^31) and 2^31 - 1.
 """
 scalar Int
 
-"""A paginated list of User items."""
-type UserPaginator {
+"""A paginated list of Article items."""
+type ArticlePaginator {
   """Pagination information about the list of items."""
   paginatorInfo: PaginatorInfo!
 
-  """A list of User items."""
-  data: [User!]!
+  """A list of Article items."""
+  data: [Article!]!
 }
 
 """Information about pagination using a fully featured paginator."""
@@ -62,6 +62,40 @@ type PaginatorInfo {
 
 """The `Boolean` scalar type represents `true` or `false`."""
 scalar Boolean
+
+"""A paginated list of User items."""
+type UserPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of User items."""
+  data: [User!]!
+}
+
+"""Order by clause for Query.articles.orderBy."""
+input QueryArticlesOrderByOrderByClause {
+  """The column that is used for ordering."""
+  column: QueryArticlesOrderByColumn!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+"""Allowed column names for Query.articles.orderBy."""
+enum QueryArticlesOrderByColumn {
+  CREATED_AT
+  TITLE
+  CONTENT
+}
+
+"""Directions for ordering a list of records."""
+enum SortOrder {
+  """Sort records in ascending order."""
+  ASC
+
+  """Sort records in descending order."""
+  DESC
+}
 
 """
 The `Float` scalar type represents signed double-precision fractional
@@ -269,15 +303,6 @@ enum __DirectiveLocation {
 
   """Location adjacent to an input object field definition."""
   INPUT_FIELD_DEFINITION
-}
-
-"""Directions for ordering a list of records."""
-enum SortOrder {
-  """Sort records in ascending order."""
-  ASC
-
-  """Sort records in descending order."""
-  DESC
 }
 
 """

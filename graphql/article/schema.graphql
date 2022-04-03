@@ -1,0 +1,34 @@
+"Users article."
+type Article {
+    "Unique primary key."
+    id: ID!
+
+    "Article title"
+    title: String!
+
+    "Article content"
+    content: String!
+
+    "Article update date and time"
+    created_at: DateTime!
+
+    "Article update date and time"
+    updated_at: DateTime!
+
+    "User has created this article"
+    author: User! @belongsTo(relation: "user")
+
+    "Article image"
+    image: String @rename(attribute: "image_url")
+}
+
+input ArticleInput {
+    "Article title"
+    title: String! @rules(apply: ["min:5", "max:255"])
+
+    "Article content"
+    content: String! @rules(apply: ["min:5", "max:5000"])
+
+    "Article image"
+    image: Upload!  @rules(apply: ["image", "max:1004"])
+}

@@ -1,17 +1,42 @@
-type AuthUser {
+"""Users article."""
+type Article {
   """Unique primary key."""
   id: ID!
 
-  """Non-unique name."""
-  name: String!
+  """Article title"""
+  title: String!
 
-  """Unique email address."""
-  email: String!
+  """Article content"""
+  content: String!
 
-  """When the email was verified."""
-  email_verified_at: DateTime
-  token: String!
-  created_at: DateTime
+  """Article update date and time"""
+  created_at: DateTime!
+
+  """Article update date and time"""
+  updated_at: DateTime!
+
+  """User has created this article"""
+  author: User!
+}
+
+input ArticleInput {
+  """Article title"""
+  title: String!
+
+  """Article content"""
+  content: String!
+
+  """Article image"""
+  image: Upload
+}
+
+"""A paginated list of Article items."""
+type ArticlePaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Article items."""
+  data: [Article!]!
 }
 
 """
@@ -19,9 +44,29 @@ A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`.
 """
 scalar DateTime
 
+input LoginInput {
+  """User email"""
+  email: String!
+
+  """User password"""
+  password: String!
+}
+
 type Mutation {
+  """Register"""
+  register(input: RegisterUserInput): User!
+
   """Login"""
-  login(email: String!, password: String!): AuthUser!
+  login(input: LoginInput): User!
+
+  """Create Article"""
+  createArticle(input: ArticleInput!): Article!
+
+  """Create Article"""
+  updateArticle(id: ID!, input: ArticleInput!): Article
+
+  """Delete Article"""
+  deleteArticle(id: ID!): Article
 }
 
 """Allows ordering a list of records."""
@@ -131,6 +176,12 @@ type Query {
   """Get current user"""
   me: User
 
+  """Get Article data"""
+  article(
+    """Article ID"""
+    id: ID!
+  ): Article
+
   """List multiple users."""
   users(
     """Filters by name. Accepts SQL LIKE wildcards `%` and `_`."""
@@ -142,6 +193,52 @@ type Query {
     """The offset from which items are returned."""
     page: Int
   ): UserPaginator
+
+  """Search articles"""
+  articles(
+    """Search by Article title"""
+    title: String
+
+    """Search by article content"""
+    content: String
+
+    """Search by article content or title"""
+    search: String
+    orderBy: [QueryArticlesOrderByOrderByClause!]
+
+    """Limits number of fetched items."""
+    first: Int! = 10
+
+    """The offset from which items are returned."""
+    page: Int
+  ): ArticlePaginator
+}
+
+"""Allowed column names for Query.articles.orderBy."""
+enum QueryArticlesOrderByColumn {
+  CREATED_AT
+  TITLE
+  CONTENT
+}
+
+"""Order by clause for Query.articles.orderBy."""
+input QueryArticlesOrderByOrderByClause {
+  """The column that is used for ordering."""
+  column: QueryArticlesOrderByColumn!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+input RegisterUserInput {
+  """User name"""
+  name: String!
+
+  """User email"""
+  email: String!
+
+  """User password"""
+  password: String!
 }
 
 """Information about pagination using a simple paginator."""
@@ -188,6 +285,11 @@ enum Trashed {
   WITHOUT
 }
 
+"""
+Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec
+"""
+scalar Upload
+
 """Account of a person who utilizes this application."""
 type User {
   """Unique primary key."""
@@ -199,14 +301,30 @@ type User {
   """Unique email address."""
   email: String!
 
-  """When the email was verified."""
+  """
+  JWT access token
+  Not null only for login request
+  """
+  token: String
+
+  """Email verification date and time"""
   email_verified_at: DateTime
 
-  """When the account was created."""
+  """User registration date and time"""
   created_at: DateTime!
 
-  """When the account was last updated."""
+  """User update date and time"""
   updated_at: DateTime!
+  total_articles: Int!
+
+  """List of user articles"""
+  articles(
+    """Limits number of fetched items."""
+    first: Int!
+
+    """The offset from which items are returned."""
+    page: Int
+  ): ArticlePaginator
 }
 
 """A paginated list of User items."""

@@ -1,0 +1,50 @@
+"Account of a person who utilizes this application."
+type User {
+    "Unique primary key."
+    id: ID!
+
+    "Non-unique name."
+    name: String!
+
+    "Unique email address."
+    email: String!
+
+    """
+    JWT access token
+    Not null only for login request
+    """
+    token: String
+
+    "Email verification date and time"
+    email_verified_at: DateTime
+
+    "User registration date and time"
+    created_at: DateTime!
+
+    "User update date and time"
+    updated_at: DateTime!
+
+    "List of user articles"
+    articles: [Article!] @hasMany(type: PAGINATOR)
+
+    total_articles: Int! @count(relation: "articles")
+}
+
+input RegisterUserInput {
+    "User name"
+    name: String! @rules(apply: ["min:3"])
+
+    "User email"
+    email: String! @rules(apply: ["email", "unique:users,email"])
+
+    "User password"
+    password: String!
+}
+
+input LoginInput {
+    "User email"
+    email: String!
+
+    "User password"
+    password: String!
+}
