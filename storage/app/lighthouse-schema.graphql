@@ -29,7 +29,7 @@ input ArticleInput {
   """Article content"""
   content: String!
 
-  """Article image"""
+  """Article image file"""
   image: Upload!
 }
 
