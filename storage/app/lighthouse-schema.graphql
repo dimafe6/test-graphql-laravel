@@ -7,6 +7,9 @@ type AuthUser {
 
   """Unique email address."""
   email: String!
+
+  """When the email was verified."""
+  email_verified_at: DateTime
   token: String!
   created_at: DateTime
 }
