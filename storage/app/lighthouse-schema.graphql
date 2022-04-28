@@ -22,6 +22,10 @@ type Article {
   image: String
 }
 
+type ArticleId {
+  id: Int!
+}
+
 input ArticleInput {
   """Article title"""
   title: String!
@@ -69,7 +73,7 @@ type Mutation {
   updateArticle(id: ID!, input: ArticleInput!): Article
 
   """Delete Article"""
-  deleteArticle(id: ID!): Article
+  deleteArticle(id: ID!): ArticleId
 }
 
 """Allows ordering a list of records."""
@@ -190,7 +194,7 @@ type Query {
     """Filters by name. Accepts SQL LIKE wildcards `%` and `_`."""
     name: String
 
-    """Limits number of fetched items."""
+    """Limits number of fetched items. Maximum allowed value: 100."""
     first: Int! = 10
 
     """The offset from which items are returned."""
@@ -209,7 +213,7 @@ type Query {
     search: String
     orderBy: [QueryArticlesOrderByOrderByClause!]
 
-    """Limits number of fetched items."""
+    """Limits number of fetched items. Maximum allowed value: 100."""
     first: Int! = 10
 
     """The offset from which items are returned."""
@@ -274,6 +278,12 @@ enum SortOrder {
   DESC
 }
 
+type Subscription {
+  articleUpdated: Article
+  articleCreated: Article
+  articleDeleted: ArticleId
+}
+
 """
 Specify if you want to include or exclude trashed results from a query.
 """
@@ -322,8 +332,8 @@ type User {
 
   """List of user articles"""
   articles(
-    """Limits number of fetched items."""
-    first: Int!
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int! = 10
 
     """The offset from which items are returned."""
     page: Int

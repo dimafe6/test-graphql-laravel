@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
+use Nuwave\Lighthouse\Subscriptions\SubscriptionServiceProvider;
+use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
 
 return [
 
@@ -173,9 +175,11 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        //TracingServiceProvider::class,
+        SubscriptionServiceProvider::class
 
     ],
 

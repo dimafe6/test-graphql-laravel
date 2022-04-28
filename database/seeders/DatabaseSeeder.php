@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         Schema::disableForeignKeyConstraints();
         User::truncate();
-        User::factory(50)->create();
+        User::factory(5)->create();
         $this->call(ArticlesTableSeeder::class);
     }
 }

@@ -22,6 +22,10 @@ type Article {
     image: String @rename(attribute: "image_url")
 }
 
+type ArticleId {
+    id: Int!
+}
+
 input ArticleInput {
     "Article title"
     title: String! @rules(apply: ["string", "required", "min:5", "max:255"])

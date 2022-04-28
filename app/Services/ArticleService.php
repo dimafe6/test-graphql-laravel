@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Article;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Log;
+use Nuwave\Lighthouse\Execution\Utils\Subscription;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ArticleService
@@ -40,6 +42,8 @@ class ArticleService
 
         $this->saveArticleImage($article, $data['image'] ?? null);
 
+        Subscription::broadcast('articleCreated', $article);
+
         return $article;
     }
 
@@ -58,8 +62,31 @@ class ArticleService
             $article->update($data);
 
             $this->saveArticleImage($article, $data['image'] ?? null);
+
+            Subscription::broadcast('articleUpdated', $article);
         }
 
         return $article;
+    }
+
+    /**
+     * @param Authenticatable|User $user
+     * @param int $articleId
+     * @return array
+     */
+    public function delete(Authenticatable|User $user, int $articleId)
+    {
+        /** @var Article $article */
+        $article = Article::find($articleId);
+
+        $response = ['id' => $articleId];
+
+        if ($article && $user->can('delete', $article)) {
+            $article->delete();
+
+            Subscription::broadcast('articleDeleted', $response);
+        }
+
+        return $response;
     }
 }

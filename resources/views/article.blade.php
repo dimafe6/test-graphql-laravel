@@ -14,7 +14,7 @@
 </head>
 <body class="antialiased">
 <div id="app">
-    <article-list></article-list>
+    <article-page article_id="{{ $article->id }}"></article-page>
 </div>
 </body>
 

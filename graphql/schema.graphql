@@ -68,5 +68,14 @@ type Mutation {
     ): Article @field(resolver: "ArticleMutator@update") @guard @can(ability: "update", query: true)
 
     "Delete Article"
-    deleteArticle(id: ID! @eq): Article @delete @guard @can(ability: "delete", query: true)
+    # Deleting article with directive @delete
+    #deleteArticle(id: ID! @eq): Article @delete @guard @can(ability: "delete", query: true)
+    # Deleting article with resolver
+    deleteArticle(id: ID! @eq): ArticleId @field(resolver: "ArticleMutator@delete") @guard @can(ability: "delete", query: true, model: "Article")
+}
+
+type Subscription {
+    articleUpdated: Article
+    articleCreated: Article
+    articleDeleted: ArticleId
 }
